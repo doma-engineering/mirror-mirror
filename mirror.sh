@@ -42,12 +42,14 @@ LIMIT=${2:-$REPOS_AMOUNT}
 gh repo list doma-engineering --limit "$LIMIT" | while read -r repo _; do
   # Check if the repo isn't cloned yet. Note that $repo has $ORG as the prefix.
   if [[ -d "$repo" ]]; then
+    echo "$repo is already cloned. Pulling the latest changes."
     cd "$repo" || exit 1
     # Pull the latest changes.
     git pull
-  # Else clone it into "$repo" with gh.
-  # It uses `clone "$repo" "$repo"` to trick gh into cloning the repo into a super-directory with the same name as organisation.
+    cd - || exit 1
   else
+    # Else clone it into "$repo" with gh.
+    # It uses `clone "$repo" "$repo"` to trick gh into cloning the repo into a super-directory with the same name as organisation.
     gh repo clone "$repo" "$repo"
   fi
 done
