@@ -39,7 +39,7 @@ REPOS_AMOUNT="$(wc -l <<< "$REPOS")"
 LIMIT=${2:-$REPOS_AMOUNT}
 
 # Clone all repos from a GitHub organization.
-gh repo list doma-engineering --limit "$LIMIT" | while read -r repo _; do
+gh repo list "$ORG" --limit "$LIMIT" | while read -r repo _; do
   # Check if the repo isn't cloned yet. Note that $repo has $ORG as the prefix.
   if [[ -d "$repo" ]]; then
     echo "$repo is already cloned. Pulling the latest changes."
